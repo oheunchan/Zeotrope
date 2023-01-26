@@ -1,6 +1,8 @@
 
 /*
 ##Zeotrope Project
+2023.01.26
+-리모컨으로 LED 동작 테스트
 
 2023.01.25  
 - Timer를 이용한 Task 구현
@@ -18,6 +20,13 @@
 #define RedPin    11
 #define GreenPin  10
 #define BluePin   9
+
+#define CHMinus 0xFFA25D
+#define CH      0xFF629D
+#define CHPlus  0xFFE21D
+#define OFF     0xFF22DD
+
+#define DebugMode 1
 
 //Tiemr variable
 int timer_Led;
@@ -59,8 +68,9 @@ void setup() {
   pinMode(GreenPin, OUTPUT);
   pinMode(BluePin, OUTPUT);
  
-
+  #if DebugMode
   Serial.begin(9600);
+  #endif
   ir.begin(IRPIN);
 
   //Timer init
@@ -80,6 +90,7 @@ void IR_Test()
 {
 
 
+#if 0
     if (ir.decode(&res))
     {
       #if 1
@@ -96,7 +107,31 @@ void IR_Test()
       #endif
 
     }
-  
+#else
+  if (ir.decode(&res))
+  {
+    switch(res.value)
+    {
+      case CHMinus:
+        setColor(255, 0, 0);  Serial.println("red");  break;
+      case CH:
+        setColor(0, 255, 0);  Serial.println("Green");   break;
+      case CHPlus:
+        setColor(0, 0, 255);  Serial.println("blue"); break;
+      case OFF:
+        digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
+        Serial.println("OFF");
+        break;
+
+      default:   
+      break; 
+
+    }
+
+    ir.resume(); 
+  }
+#endif
+
 }
 
 
@@ -130,7 +165,7 @@ void Task_Func()
 {
 
   if(Ir_task){  IR_Test();  Ir_task=0;}
-  if(Led_task){ Task_LED(); Led_task=0;}  
+  //if(Led_task){ Task_LED(); Led_task=0;}  
   
 }
 
