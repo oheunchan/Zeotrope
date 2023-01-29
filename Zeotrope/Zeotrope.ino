@@ -1,6 +1,13 @@
 
 /*
 ##Zeotrope Project
+2023.01.29
+-HC06 TEST 노트북으로 통신 확인
+-IR 동작이 안되서 IRREMOTE V3.9.0으로 다운그레이드 라이브러리 upgrade 하지 말것
+
+2023.01.28
+-HC06 TEST 중 아이폰에서 동작하지 않음.
+
 2023.01.26
 -리모컨으로 LED 동작 테스트
 
@@ -12,14 +19,18 @@
 */
 
 #include "string.h"
-#include <IRremote.h>
-#include <IRremoteInt.h>
+#include <IRremote.h> //v3.9.0
+#include <IRremoteInt.h>  //v3.9.0
+#include <SoftwareSerial.h>
 
 #define IRPIN     8
 
 #define RedPin    11
 #define GreenPin  10
 #define BluePin   9
+
+#define BT_RXD    3
+#define BT_TXD    2
 
 #define CHMinus 0xFFA25D
 #define CH      0xFF629D
@@ -35,7 +46,7 @@ int timer_Ir;
 //IR variable
 IRrecv ir(IRPIN);
 decode_results res;
-
+//SoftwareSerial bluetooth(BT_RXD, BT_TXD);
 //Flag variable
 char Led_task;
 char Ir_task;
@@ -71,6 +82,7 @@ void setup() {
   #if DebugMode
   Serial.begin(9600);
   #endif
+  //bluetooth.begin(9600);
   ir.begin(IRPIN);
 
   //Timer init
@@ -90,7 +102,7 @@ void IR_Test()
 {
 
 
-#if 0
+#if 1
     if (ir.decode(&res))
     {
       #if 1
@@ -171,6 +183,37 @@ void Task_Func()
 
 void loop() {
   // put your main code here, to run repeatedly:
+  #if 1
   Task_Func();
   
+  #else   //test
+  if(bluetooth.available())
+  {
+   //Serial.write(bluetooth.read());
+   Serial.print(bluetooth.read());
+    switch(bluetooth.read())
+    {
+      case 0:
+        setColor(255, 0, 0);  Serial.println("red");  break;
+      case 1:
+        setColor(0, 255, 0);  Serial.println("Green");   break;
+      case 2:
+        setColor(0, 0, 255);  Serial.println("blue"); break;
+      case 3:
+        digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
+        Serial.println("OFF");
+        break;
+
+      default:   
+      break;  
+
+    }
+  
+
+  }
+  if(Serial.available())
+  {
+     bluetooth.write(Serial.read());
+  }
+  #endif
 }
