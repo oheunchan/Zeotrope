@@ -1,6 +1,10 @@
 
 /*
 ##Zeotrope Project
+2023.01.30
+- HC06 LED 동작 테스트
+- bluetooth.read()가 1byte로 동작함 Protocol은 3byte이므로 수정 필요
+
 2023.01.29
 -HC06 TEST 노트북으로 통신 확인
 -IR 동작이 안되서 IRREMOTE V3.9.0으로 다운그레이드 라이브러리 upgrade 하지 말것
@@ -46,7 +50,7 @@ int timer_Ir;
 //IR variable
 IRrecv ir(IRPIN);
 decode_results res;
-//SoftwareSerial bluetooth(BT_RXD, BT_TXD);
+SoftwareSerial bluetooth(BT_RXD, BT_TXD);
 //Flag variable
 char Led_task;
 char Ir_task;
@@ -82,7 +86,7 @@ void setup() {
   #if DebugMode
   Serial.begin(9600);
   #endif
-  //bluetooth.begin(9600);
+  bluetooth.begin(9600);
   ir.begin(IRPIN);
 
   //Timer init
@@ -102,7 +106,7 @@ void IR_Test()
 {
 
 
-#if 1
+#if 0
     if (ir.decode(&res))
     {
       #if 1
@@ -183,21 +187,25 @@ void Task_Func()
 
 void loop() {
   // put your main code here, to run repeatedly:
+
   #if 1
   Task_Func();
   
   #else   //test
+
+
   if(bluetooth.available())
   {
+    
    //Serial.write(bluetooth.read());
-   Serial.print(bluetooth.read());
+   
     switch(bluetooth.read())
     {
-      case 0:
+      case CHMinus:
         setColor(255, 0, 0);  Serial.println("red");  break;
-      case 1:
+      case CH:
         setColor(0, 255, 0);  Serial.println("Green");   break;
-      case 2:
+      case 0xff:
         setColor(0, 0, 255);  Serial.println("blue"); break;
       case 3:
         digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
