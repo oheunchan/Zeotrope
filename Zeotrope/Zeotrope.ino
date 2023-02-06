@@ -1,6 +1,9 @@
 
 /*
 ##Zeotrope Project
+2023.02.06
+- Step Motor Test로 구현
+
 2023.01.30
 - HC06 LED 동작 테스트
 - bluetooth.read()가 1byte로 동작함 Protocol은 3byte이므로 수정 필요
@@ -26,39 +29,68 @@
 #include <IRremote.h> //v3.9.0
 #include <IRremoteInt.h>  //v3.9.0
 #include <SoftwareSerial.h>
+#include <Stepper.h>
 
-#define IRPIN     8
 
-#define RedPin    11
-#define GreenPin  10
-#define BluePin   9
 
-#define BT_RXD    3
+//LED
+#define RedPin    5
+#define GreenPin  6
+#define BluePin   7
+
+//Bluetooth
+#define BT_RXD    4
 #define BT_TXD    2
 
+//IR
+#define IRPIN     13
 #define CHMinus 0xFFA25D
 #define CH      0xFF629D
 #define CHPlus  0xFFE21D
 #define OFF     0xFF22DD
+
+//Motor 
+#define STEPS 200
+#define RPM 15
+#define IN1 11 // IN1
+#define IN2 10 // IN2
+#define IN3 9 // IN3
+#define IN4 8 // IN4
 
 #define DebugMode 1
 
 //Tiemr variable
 int timer_Led;
 int timer_Ir;
+int timer_blue;
+int debug_timer;
 
 //IR variable
 IRrecv ir(IRPIN);
 decode_results res;
 SoftwareSerial bluetooth(BT_RXD, BT_TXD);
+Stepper my28BJY48(2048, IN4, IN2, IN3, IN1);
+
+
+
 //Flag variable
 char Led_task;
 char Ir_task;
+char debug_flag;
+char Blue_task;
 
+char Motor_Speed;
 
 ISR(TIMER0_COMPA_vect){
   timer_Led++;
   timer_Ir ++;
+  debug_timer++;
+  timer_blue++;
+  if(timer_blue>7)   //30ms
+  {
+    Blue_task=1;
+    timer_blue=0;
+  }
 
   if(timer_Ir>12) //50ms
   {
@@ -70,6 +102,12 @@ ISR(TIMER0_COMPA_vect){
   {
     Led_task=1;
     timer_Led=0;
+   // TCNT0=0;
+  }
+  if(debug_timer>400)
+  {
+    debug_flag=1;
+    debug_timer=0;
     TCNT0=0;
   }
 
@@ -90,6 +128,7 @@ void setup() {
   ir.begin(IRPIN);
 
   //Timer init
+  #if 1
   TCCR0A = 0; //TCCR0A initialize
   TCCR0B = 0; //TCCR0B initialize
   TCNT0 = 0;  //TCNT0 initialize
@@ -98,8 +137,9 @@ void setup() {
   TCCR0B |= (1<<CS02) | (0<<CS00);
   TIMSK0 |= (1<<OCIE0A);
   sei();
-  
-  
+  #endif
+  my28BJY48.setSpeed(RPM);
+  Motor_Speed=RPM;
 }
 
 void IR_Test()
@@ -176,38 +216,116 @@ void Task_LED()
       
 }
 
+void Bluetooth()
+{
+  Serial.println("BluteToothOK");
+   switch(bluetooth.read())
+    {
+      case 1:
+        setColor(255, 0, 0);  Serial.println("red");  break;
+      case 2:
+        setColor(0, 255, 0);  Serial.println("Green");   break;
+      case 3:
+        setColor(0, 0, 255);  Serial.println("blue"); break;
+      case 4:
+        digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
+        Serial.println("OFF");
+        break;
+      case 5:
+        my28BJY48.step(STEPS);  break;
+      case 6:
+        my28BJY48.step(-STEPS);  break;
+      case 7:
+        if(Motor_Speed<=15) 
+        {Motor_Speed+=5;  my28BJY48.setSpeed(Motor_Speed);} break;
+      case 8:
+        if(Motor_Speed>=0) 
+        {Motor_Speed-=5;  my28BJY48.setSpeed(Motor_Speed);} break;
+
+      default:   
+      break;  
+
+    }
+}
+
 
 void Task_Func()
 {
 
+  if(Blue_task){  Bluetooth();  Blue_task=0;}
   if(Ir_task){  IR_Test();  Ir_task=0;}
-  //if(Led_task){ Task_LED(); Led_task=0;}  
-  
+  //if(Led_task){ Task_LED(); Led_task=0;}
+    
 }
+const int BUFFER_SIZE = 255;
+char buf[BUFFER_SIZE];
+
+u16 b_cmd1=0;
+u16 b_cmd2=0;
+u16 b_cmd3=0;
+unsigned int cmd=0;
 
 void loop() {
   // put your main code here, to run repeatedly:
+  byte test[20]={0,};
+  char test0=0;
+  int rlen=0;
+  
 
-  #if 1
   Task_Func();
+
+
+//TEST Code
+#if 0
+  #if 0
+  //Task_Func();
+  if (bluetooth.available() > 0) {
+    // read the incoming bytes:
+    int rlen = bluetooth.readBytes(buf, BUFFER_SIZE);
+  //Serial.print(rlen);    // prints the received data
+    //Serial.print("I received: ");
+    for(int i = 0; i < rlen; i++)
+      Serial.print(buf[i]);
+  }
   
   #else   //test
 
 
-  if(bluetooth.available())
+  if(bluetooth.available()>0)
   {
     
-   //Serial.write(bluetooth.read());
-   
+#if 0
+    rlen = bluetooth.readBytes(buf, BUFFER_SIZE);
+
+    for(int i = 0; i < rlen; i++)
+    { 
+      test[i]=buf[i];
+      Serial.print(test[i]);
+    }
+#endif
+  // Serial.write(bluetooth.read());
+  // b_cmd1=bluetooth.read()>>16;
+   //b_cmd2=bluetooth.read()>>8;
+   //b_cmd3=bluetooth.read();
+
+  
+  //Serial.println(test[0]);
+  //Serial.println(test[1]);
+  //Serial.println(test[2]);
+
+    //switch(bluetooth.readBytes(test,2));
+
+    #if 0
+    //switch(bluetooth.read())
     switch(bluetooth.read())
     {
-      case CHMinus:
+      case 1:
         setColor(255, 0, 0);  Serial.println("red");  break;
-      case CH:
+      case 2:
         setColor(0, 255, 0);  Serial.println("Green");   break;
-      case 0xff:
-        setColor(0, 0, 255);  Serial.println("blue"); break;
       case 3:
+        setColor(0, 0, 255);  Serial.println("blue"); break;
+      case 4:
         digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
         Serial.println("OFF");
         break;
@@ -216,12 +334,36 @@ void loop() {
       break;  
 
     }
-  
+  #endif  
+
+#endif
 
   }
-  if(Serial.available())
-  {
-     bluetooth.write(Serial.read());
-  }
+  //if(Serial.available())
+ // {
+  //   bluetooth.write(Serial.read());
+  //}
+
+  
+  
   #endif
+  //Serial.print(rlen);
+
+  #if 0
+  if(debug_flag)
+  {
+    //for(int i=0; i<3; i++)
+    for(int i = 0; i < rlen; i++)
+    {
+      Serial.print(buf[i]);
+    }
+    debug_flag=0;
+  }
+  #else
+  
+  #endif
+
+
+
+
 }
