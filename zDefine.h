@@ -12,10 +12,6 @@
 
 #define IRPIN     13
 
-#define CHMinus 0xFFA25D
-#define CH      0xFF629D
-#define CHPlus  0xFFE21D
-#define OFF     0xFF22DD
 
 //Motor 
 #define STEPS 10
