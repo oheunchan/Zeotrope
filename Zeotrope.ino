@@ -1,6 +1,9 @@
 
 /*
 ##Zeotrope Project
+2023.03.05
+- IR/BT 프로토콜 추가
+
 2023.02.19
 - 코드 리팩토링 및 모듈화 작업중
 
@@ -171,26 +174,18 @@ void setup() {
   #endif
 
 
-
+ 
   BT_Init();
   IR_Init();
-
+  
   Motor_init();
   
 }
 
 
-
-void setColor(int rgain, int ggain, int bgain)
-{
-  analogWrite(RedPin, rgain);
-  analogWrite(GreenPin, ggain);
-  analogWrite(BluePin, bgain); 
-}
-
 void Task_LED()
 {
-  setColor(255, 0, 0); // red
+//  setColor(255, 0, 0); // red
 
 }
 
