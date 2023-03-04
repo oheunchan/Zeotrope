@@ -1,6 +1,9 @@
+#include <SoftwareSerial.h>
 #include <IRremote.h> //v3.9.0
 #include <IRremoteInt.h>  //v3.9.0
 #include "IRLed.h"
+#include "Motor.h"
+#include "RGB_Led.h"
 #include "zDefine.h"
 
 
@@ -29,16 +32,10 @@ void IR_Test()
   {
     switch(res.value)
     {
-      case CHMinus:
-        //setColor(255, 0, 0);  Serial.println("red");  break;
-      case CH:
-        //setColor(0, 255, 0);  Serial.println("Green");   break;
-      case CHPlus:
-        //setColor(0, 0, 255);  Serial.println("blue"); break;
-      case OFF:
-        digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW);
-        //Serial.println("OFF");
-        break;
+      case IR_LED_ON:     setColor(255, 255, 255);  _printf("LED ON");  break;
+      case IR_LED_OFF:    RGB_LED_OFF();  _printf("LED OFF");  break;
+      case IR_MOTOR_FOR:  Motor_SetStep(1000); _printf("MOTOR FORWARD");  break;
+      case IR_MOTOR_BACK: Motor_SetStep(-1000); _printf("MOTOR BACKWARD");  break;
 
       default:
       break;
