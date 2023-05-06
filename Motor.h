@@ -5,8 +5,9 @@
 
 void _printf(const char *s, ...);
 void Motor_init();
-long Motor_SetSpeed(long _RPM);
-int Motor_SetStep(int _step);
-
+void Motor_ON();
+void Motor_OFF();
+void Motor_SPD_DN(int _spd);
+void Motor_SPD_UP(int _spd);
 
 #endif
