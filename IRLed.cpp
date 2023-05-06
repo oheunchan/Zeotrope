@@ -34,9 +34,12 @@ void IR_Test()
     {
       case IR_LED_ON:     setColor(255, 255, 255);  _printf("LED ON");  break;
       case IR_LED_OFF:    RGB_LED_OFF();  _printf("LED OFF");  break;
-      case IR_MOTOR_FOR:  Motor_SetStep(1000); _printf("MOTOR FORWARD");  break;
-      case IR_MOTOR_BACK: Motor_SetStep(-1000); _printf("MOTOR BACKWARD");  break;
-
+      case IR_MOTOR_FOR:  digitalWrite(MOTOR_DIR, LOW); _printf("MOTOR FORWARD");  break;
+      case IR_MOTOR_BACK: digitalWrite(MOTOR_DIR, HIGH); _printf("MOTOR BACKWARD");  break;
+      case IR_MOTOR_ON:   Motor_ON();  _printf("MOTOR ON");  break;
+      case IR_MOTOR_OFF:  Motor_OFF();  _printf("MOTOR OFF");  break;
+      case IR_MOTOR_SPDDN: OCR0B -=30; _printf("MOTOR SPD DN");  break;
+      case IR_MOTOR_SPDUP: OCR0B +=30;  _printf("MOTOR SPD UP");  break;
       default:
       break;
 
