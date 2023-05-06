@@ -45,9 +45,9 @@ void Bluetooth()
         switch(bt_rx[BT_CMD1])
         {
           case LED_ON:
-            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(255, 255, 255);  _printf("LED ON");  break;
+            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(ON);  _printf("LED ON");  break;
           case LED_OFF:
-            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  RGB_LED_OFF(); _printf("LED OFF");   break;
+            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  setColor(OFF); _printf("LED OFF");   break;
           case MT_FORWARD: 
             if(bt_rx[BT_CMD2]==0x1D && bt_rx[BT_CHKSUM]==Chksum)  _printf("MOTOR FORWARD");  break;
           case MT_BACKWARD:
