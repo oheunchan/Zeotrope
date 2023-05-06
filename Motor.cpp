@@ -1,27 +1,52 @@
 #include <Stepper.h>
 #include "Motor.h"
+#include "Arduino.h"
 #include "zDefine.h"
 
-Stepper my28BJY48(2048, IN4, IN2, IN3, IN1);
+
 
 
 
 void Motor_init()
 {
   _printf("Motor init\r\n");
-  my28BJY48.setSpeed(RPM);
-  my28BJY48.step(STEPS);
+
+  pinMode(MOTOR_EN, OUTPUT);
+  pinMode(MOTOR_BRK, OUTPUT);
+  pinMode(MOTOR_PWM, OUTPUT);
+  pinMode(MOTOR_DIR,  OUTPUT);
+
+  digitalWrite(MOTOR_EN, LOW);
+  digitalWrite(MOTOR_BRK, LOW);
+  digitalWrite(MOTOR_DIR, LOW);
+
+ 
 }
 
-long Motor_SetSpeed(long _RPM)
+
+
+void Motor_ON()
 {
-  
-  my28BJY48.setSpeed(_RPM);
-  return _RPM;
+  digitalWrite(MOTOR_EN, LOW);
+  digitalWrite(MOTOR_BRK, LOW);
 }
 
-int Motor_SetStep(int _step)
+void Motor_OFF()
 {
-  my28BJY48.step(_step);
-  return _step;
+  digitalWrite(MOTOR_EN, HIGH);
+  digitalWrite(MOTOR_BRK, HIGH);
+}
+
+void Motor_SPD_DN(int _spd)
+{
+ 
+
+   //return 1;
+}
+
+void Motor_SPD_UP(int _spd)
+{
+
+
+   //return 1;
 }
