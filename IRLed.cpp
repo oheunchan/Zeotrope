@@ -32,8 +32,8 @@ void IR_Test()
   {
     switch(res.value)
     {
-      case IR_LED_ON:     setColor(255, 255, 255);  _printf("LED ON");  break;
-      case IR_LED_OFF:    RGB_LED_OFF();  _printf("LED OFF");  break;
+      case IR_LED_ON:     setColor(ON);  _printf("LED ON");  break;
+      case IR_LED_OFF:    setColor(OFF);  _printf("LED OFF");  break;
       case IR_MOTOR_FOR:  digitalWrite(MOTOR_DIR, LOW); _printf("MOTOR FORWARD");  break;
       case IR_MOTOR_BACK: digitalWrite(MOTOR_DIR, HIGH); _printf("MOTOR BACKWARD");  break;
       case IR_MOTOR_ON:   Motor_ON();  _printf("MOTOR ON");  break;
