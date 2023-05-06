@@ -10,6 +10,10 @@
 IRrecv ir(IRPIN);
 decode_results res;
 
+extern char LED_Flag;
+extern char Motor_Flag;
+
+
 void test2()
 {
 
@@ -32,14 +36,14 @@ void IR_Test()
   {
     switch(res.value)
     {
-      case IR_LED_ON:     setColor(ON);  _printf("LED ON");  break;
-      case IR_LED_OFF:    setColor(OFF);  _printf("LED OFF");  break;
-      case IR_MOTOR_FOR:  digitalWrite(MOTOR_DIR, LOW); _printf("MOTOR FORWARD");  break;
-      case IR_MOTOR_BACK: digitalWrite(MOTOR_DIR, HIGH); _printf("MOTOR BACKWARD");  break;
-      case IR_MOTOR_ON:   Motor_ON();  _printf("MOTOR ON");  break;
-      case IR_MOTOR_OFF:  Motor_OFF();  _printf("MOTOR OFF");  break;
-      case IR_MOTOR_SPDDN: OCR0B -=30; _printf("MOTOR SPD DN");  break;
-      case IR_MOTOR_SPDUP: OCR0B +=30;  _printf("MOTOR SPD UP");  break;
+      case IR_LED_ON:     setColor(ON); LED_Flag=1; _printf("LED ON\r\n");  break;
+      case IR_LED_OFF:    setColor(OFF); LED_Flag=0;  _printf("LED OFF\r\n");  break;
+      case IR_MOTOR_FOR:  digitalWrite(MOTOR_DIR, LOW); _printf("MOTOR FORWARD\r\n");  break;
+      case IR_MOTOR_BACK: digitalWrite(MOTOR_DIR, HIGH); _printf("MOTOR BACKWARD\r\n");  break;
+      case IR_MOTOR_ON:   /*Motor_ON();*/ Motor_Flag=ON; _printf("MOTOR ON\r\rn");  break;
+      case IR_MOTOR_OFF:  /*Motor_OFF();*/Motor_Flag=OFF;  _printf("MOTOR OFF\r\rn");  break;
+      case IR_MOTOR_SPDDN: Motor_SPD_DN(30); _printf("MOTOR SPD DN\r\n");  break;
+      case IR_MOTOR_SPDUP: Motor_SPD_UP(30);  _printf("MOTOR SPD UP\r\n");  break;
       default:
       break;
 
