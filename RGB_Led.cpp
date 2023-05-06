@@ -6,13 +6,15 @@
 
 void setColor(int rgain, int ggain, int bgain)
 {
-  analogWrite(RedPin, rgain);
-  analogWrite(GreenPin, ggain);
-  analogWrite(BluePin, bgain); 
+
+  digitalWrite(BluePin, HIGH); 
+  digitalWrite(RedPin, HIGH); 
+  digitalWrite(GreenPin, HIGH); 
+
   
 }
 
 void RGB_LED_OFF()
 {
-  digitalWrite(RedPin, LOW);   digitalWrite(GreenPin, LOW);    digitalWrite(BluePin, LOW); 
+   digitalWrite(GreenPin, LOW);  digitalWrite(RedPin, LOW); digitalWrite(BluePin, LOW); 
 }
