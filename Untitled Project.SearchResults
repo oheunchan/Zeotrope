@@ -1,10 +1,29 @@
----- setColor Matches (9 in 5 files) ----
-Bluetooth.cpp:48:            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(ON);  _printf("LED ON");  break;
-Bluetooth.cpp:50:            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  setColor(OFF); _printf("LED OFF");   break;
-IRLed.cpp:35:      case IR_LED_ON:     setColor(ON);  _printf("LED ON");  break;
-IRLed.cpp:36:      case IR_LED_OFF:    setColor(OFF);  _printf("LED OFF");  break;
-RGB_Led.cpp:13:	setColor(ON);
-RGB_Led.cpp:15:	setColor(OFF);
-RGB_Led.cpp:18:void setColor(int power_on)
-RGB_Led.h:5:void setColor(int power_on);
-Zeotrope.ino:153://  setColor(255, 0, 0); // red
+---- _printf Matches (28 in 8 files) ----
+Bluetooth.cpp:22:  _printf("Bt Init OK\r\n");
+Bluetooth.cpp:41:      _printf("len:%d %d data:%x\r\n",rlen,i,bt_rx[i]);
+Bluetooth.cpp:43:    _printf("chksum: %x\r\n",Chksum);
+Bluetooth.cpp:51:            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(ON); LED_Flag=1;  _printf("LED ON");  break;
+Bluetooth.cpp:53:            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  setColor(OFF); LED_Flag=0; _printf("LED OFF");   break;
+Bluetooth.cpp:55:            if(bt_rx[BT_CMD2]==0x1D && bt_rx[BT_CHKSUM]==Chksum)  _printf("MOTOR FORWARD");  break;
+Bluetooth.cpp:57:            if(bt_rx[BT_CMD2]==0xDD && bt_rx[BT_CHKSUM]==Chksum) _printf("MOTOR BACKWARD");  break;
+Bluetooth.cpp:60:              _printf("MOTOR Speed UP");  break;
+Bluetooth.cpp:63:               _printf("MOTOR Speed Down");  break;
+Bluetooth.cpp:65:            if(bt_rx[BT_CMD2]==0x57 && bt_rx[BT_CHKSUM]==Chksum)      _printf("MOTOR OFF");   break;
+Bluetooth.h:4:void _printf(const char *s, ...);
+IRLed.cpp:22:	_printf("test ok");
+IRLed.cpp:39:      case IR_LED_ON:     setColor(ON); LED_Flag=1; _printf("LED ON");  break;
+IRLed.cpp:40:      case IR_LED_OFF:    setColor(OFF); LED_Flag=0;  _printf("LED OFF");  break;
+IRLed.cpp:41:      case IR_MOTOR_FOR:  digitalWrite(MOTOR_DIR, LOW); _printf("MOTOR FORWARD");  break;
+IRLed.cpp:42:      case IR_MOTOR_BACK: digitalWrite(MOTOR_DIR, HIGH); _printf("MOTOR BACKWARD");  break;
+IRLed.cpp:43:      case IR_MOTOR_ON:   /*Motor_ON();*/ Motor_Flag=ON; _printf("MOTOR ON");  break;
+IRLed.cpp:44:      case IR_MOTOR_OFF:  /*Motor_OFF();*/Motor_Flag=OFF;  _printf("MOTOR OFF");  break;
+IRLed.cpp:45:      case IR_MOTOR_SPDDN: Motor_SPD_DN(30); _printf("MOTOR SPD DN\r\n");  break;
+IRLed.cpp:46:      case IR_MOTOR_SPDUP: Motor_SPD_UP(30);  _printf("MOTOR SPD UP\r\n");  break;
+IRLed.h:16:void _printf(const char *s, ...);
+Motor.cpp:12:  _printf("Motor init\r\n");
+Motor.cpp:56:	_printf("[%d]\r\n",OCR0B);	
+Motor.cpp:68:	_printf("[%d]\r\n",OCR0B);
+Motor.cpp:102:	_printf("speed :[%d] \r\n",OCR0B);
+Motor.h:13:void _printf(const char *s, ...);
+RGB_Led.h:4:void _printf(const char *s, ...);
+Zeotrope.ino:130:void _printf(const char *s, ...){
