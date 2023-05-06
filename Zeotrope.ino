@@ -128,12 +128,6 @@ void Timer_Init()
 
 void setup() {
   // put your setup code here, to run once:
-
-  pinMode(RedPin, OUTPUT);
-  pinMode(GreenPin, OUTPUT);
-  pinMode(BluePin, OUTPUT);
-
- 
   #if DebugMode
   Serial.begin(9600);
   #endif
@@ -143,7 +137,8 @@ void setup() {
 
   BT_Init();
   IR_Init();
-  
+
+  RGB_LED_Init();
   Motor_init();
 
   //OCR0B= 255/2; 
