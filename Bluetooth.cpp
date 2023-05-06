@@ -8,9 +8,12 @@
 SoftwareSerial bluetooth(BT_RXD, BT_TXD);
 
 
+extern char LED_Flag;
+
 const int BUFFER_SIZE = 255;
 unsigned char BT_RX_Buf[BUFFER_SIZE];
 char Motor_spd;
+
 
 void BT_Init()
 {
@@ -45,9 +48,9 @@ void Bluetooth()
         switch(bt_rx[BT_CMD1])
         {
           case LED_ON:
-            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(ON);  _printf("LED ON");  break;
+            if(bt_rx[BT_CMD2]==0x5D && bt_rx[BT_CHKSUM]==Chksum)  setColor(ON); LED_Flag=1;  _printf("LED ON");  break;
           case LED_OFF:
-            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  setColor(OFF); _printf("LED OFF");   break;
+            if(bt_rx[BT_CMD2]==0x9D && bt_rx[BT_CHKSUM]==Chksum)  setColor(OFF); LED_Flag=0; _printf("LED OFF");   break;
           case MT_FORWARD: 
             if(bt_rx[BT_CMD2]==0x1D && bt_rx[BT_CHKSUM]==Chksum)  _printf("MOTOR FORWARD");  break;
           case MT_BACKWARD:
