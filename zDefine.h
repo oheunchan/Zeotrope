@@ -22,7 +22,8 @@
 
 #define DebugMode 1
 
-
+//LED
+enum{OFF=0,ON};
 
 
 
