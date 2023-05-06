@@ -3,6 +3,7 @@
 ##Zeotrope Project
 2023.05.06
 - Release Motor 구동 및 코드 정리
+- 모터 가감속 및 LED 동작 제어 
 
 2023.03.05
 - IR/BT 프로토콜 추가
@@ -47,6 +48,7 @@ extern void Bluetooth();
 int timer_Led;
 int timer_Ir;
 int timer_blue;
+int timer_motor;
 int debug_timer;
 
 
@@ -57,40 +59,73 @@ char Ir_task;
 char debug_flag;
 char Blue_task;
 
+char led_rtask;
+char led_gtask;
+char led_btask;
+
+char motor_task;
+
+
+char LED_Flag;
+char Motor_Flag;
+
 char Motor_Speed;
 
 
 ISR(TIMER0_COMPA_vect){
-  timer_Led++;
-  timer_Ir ++;
-  debug_timer++;
-  timer_blue++;
- 
-  if(timer_blue>7)   //30ms
-  {
-    Blue_task=1;
-    timer_blue=0;
-  }
+	timer_Led++;
+	timer_Ir ++;
+	debug_timer++;
+	timer_blue++;
+	timer_motor++;
+	
+	//BLUETOOTH
+	if(timer_blue>7)   //30ms
+	{
+		Blue_task=1;
+		timer_blue=0;
+	}
+	//IR
+	if(timer_Ir>12) //50ms
+	{
+		Ir_task=1;
+		timer_Ir=0;
+	}
+	//motor
+#if 1	
+	if(timer_motor>700)
+	{
+		motor_task=1;
+		timer_motor=0;		
+		TCNT0=0;
+	}
+#endif
+	//RGB LED
+	if(timer_Led>150) //60ms   60/4
+	{
+		led_rtask=1;
 
-  if(timer_Ir>12) //50ms
-  {
-    Ir_task=1;
-    timer_Ir=0;
-  }
+	}
+	if(timer_Led>300)
+	{
+		led_gtask=1;
 
-  if(timer_Led>15) //60ms   60/4
-  {
-    Led_task=1;
-    timer_Led=0;
-   // TCNT0=0;
-  }
-  if(debug_timer>400)
-  {
-    debug_flag=1;
-    debug_timer=0;
-    TCNT0=0;
-  }
+	}
+	if(timer_Led>450)
+	{
+		led_btask=1;
+		timer_Led=0;
+	}
 
+//	if(debug_timer>400)
+	if(debug_timer>550)
+	{
+		debug_flag=1;
+		debug_timer=0;
+//		TCNT0=0;
+	}
+	
+  
 }
 
 void _printf(const char *s, ...){
@@ -131,7 +166,8 @@ void setup() {
   #if DebugMode
   Serial.begin(9600);
   #endif
- 
+  RGB_LED_Init();
+  
   Timer_Init();
   sei();
 
@@ -146,29 +182,26 @@ void setup() {
 }
 
 
-void Task_LED()
-{
-//  setColor(255, 0, 0); // red
-
-}
-
-
 void Task_Func()
 {
 
-  if(Blue_task){  Bluetooth();  Blue_task=0;}
-  if(Ir_task){  IR_Test();  Ir_task=0;}
-  //if(Led_task){ Task_LED(); Led_task=0;}
-  
-    
+	if(Blue_task){  Bluetooth();  Blue_task=0;}
+	if(Ir_task){  IR_Test();  Ir_task=0;}
+
+
+	if(led_rtask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, LOW); digitalWrite(GreenPin, LOW); digitalWrite(RedPin, HIGH);}		led_rtask=0;} 
+	if(led_gtask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, LOW); digitalWrite(GreenPin, HIGH); digitalWrite(RedPin, LOW);}		led_gtask=0;} 
+	if(led_btask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, HIGH); digitalWrite(GreenPin, LOW); digitalWrite(RedPin, LOW);}		led_btask=0;} 
+
+	if(motor_task){	Motor_Exec();	motor_task=0;}
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
  
-	 Task_Func();
-
-
+	Task_Func();
+  
+	    
 
 
 }
