@@ -4,17 +4,31 @@
 #include "zDefine.h"
 
 
-void setColor(int rgain, int ggain, int bgain)
+void RGB_LED_Init()
 {
+	pinMode(RedPin, OUTPUT);
+	pinMode(GreenPin, OUTPUT);
+	pinMode(BluePin, OUTPUT);
 
-  digitalWrite(BluePin, HIGH); 
-  digitalWrite(RedPin, HIGH); 
-  digitalWrite(GreenPin, HIGH); 
-
-  
+	setColor(ON);
+	delay(100);
+	setColor(OFF);
 }
 
-void RGB_LED_OFF()
+void setColor(int power_on)
 {
-   digitalWrite(GreenPin, LOW);  digitalWrite(RedPin, LOW); digitalWrite(BluePin, LOW); 
+
+	if(power_on)
+	{
+		digitalWrite(BluePin, HIGH); 
+		digitalWrite(RedPin, HIGH); 
+		digitalWrite(GreenPin, HIGH); 
+	}
+	else
+	{
+		digitalWrite(GreenPin, LOW);  
+		digitalWrite(RedPin, LOW); 
+		digitalWrite(BluePin, LOW);
+	}
 }
+
