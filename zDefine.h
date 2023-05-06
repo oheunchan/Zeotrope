@@ -2,9 +2,9 @@
 #define __Define_H_
 
 
-#define RedPin    5
-#define GreenPin  6
-#define BluePin   7
+#define RedPin    A0
+#define GreenPin  A1
+#define BluePin   A2
 
 //Bluetooth
 #define BT_RXD    4
@@ -14,12 +14,11 @@
 
 
 //Motor 
-#define STEPS 10
-#define RPM 15
-#define IN1 11 // IN1
-#define IN2 10 // IN2
-#define IN3 9 // IN3
-#define IN4 8 // IN4
+#define MOTOR_EN    10
+#define MOTOR_DIR   12
+#define MOTOR_BRK   8
+#define MOTOR_PWM   5
+  
 
 #define DebugMode 1
 
