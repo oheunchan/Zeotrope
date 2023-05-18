@@ -1,10 +1,14 @@
 #ifndef __Define_H_
 #define __Define_H_
 
+#define FW_VER	"V1.0"
 
 #define RedPin    A0
 #define GreenPin  A1
 #define BluePin   A2
+
+//RESET
+#define RESET_PIN	6
 
 //Bluetooth
 #define BT_RXD    4
@@ -22,8 +26,11 @@
 
 #define DebugMode 1
 
+
+
 //LED
-enum{OFF=0,ON};
+enum{OFF=0,ON,RED_ON,GREEN_ON,BLUE_ON};
+
 
 
 
