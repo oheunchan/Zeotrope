@@ -6,9 +6,13 @@ enum{
 	Motor_1Step_SPD,
 	Motor_2Step_SPD,
 	Motor_3Step_SPD,
+	Motor_4Step_SPD,
+	Motor_5Step_SPD,
+	Motor_6Step_SPD,
  	Motor_Max_SPD,
 };
 
+enum{Motor_Mode_Normal=0x0,Motor_Mode_TB};
 
 void _printf(const char *s, ...);
 void Motor_init();
