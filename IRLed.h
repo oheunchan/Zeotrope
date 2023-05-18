@@ -8,9 +8,10 @@
 #define IR_MOTOR_BACK   0xFF22DD
 #define IR_MOTOR_ON     0xFF02FD
 #define IR_MOTOR_OFF    0xFFC23D
-#define IR_MOTOR_SPDDN  0xFFE01F
-#define IR_MOTOR_SPDUP  0xFFA857
-
+#define IR_MT_NORMAL	0xFFE01F
+#define IR_MT_TABLE		0xFFA857
+#define IR_ETC_CMD		0xFF906F
+#define	IR_SOFR_RESET	0xFF6897
 
 
 void _printf(const char *s, ...);
