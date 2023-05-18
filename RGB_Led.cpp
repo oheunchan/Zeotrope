@@ -17,21 +17,25 @@ void RGB_LED_Init()
 	LED_Flag=1;
 }
 
+int led_en=0;
+	
 void setColor(int power_on)
 {
 
-	if(power_on)
+	if(!led_en)
+		power_on=OFF;
+		
+	switch(power_on)
 	{
-		digitalWrite(BluePin, HIGH); 
-		digitalWrite(RedPin, HIGH); 
-		digitalWrite(GreenPin, HIGH); 
-	}
-	else
-	{
+		case OFF:		digitalWrite(GreenPin, LOW);  	digitalWrite(RedPin, LOW); 		digitalWrite(BluePin, LOW);		break;
+		case ON: 		digitalWrite(GreenPin, HIGH);  	digitalWrite(RedPin, HIGH); 	digitalWrite(BluePin, HIGH);	break;
+		case RED_ON	:	digitalWrite(GreenPin, LOW);  	digitalWrite(RedPin, HIGH); 	digitalWrite(BluePin, LOW);		break;
+		case GREEN_ON:	digitalWrite(GreenPin, HIGH);  	digitalWrite(RedPin, LOW); 		digitalWrite(BluePin, LOW);		break;
+		case BLUE_ON:	digitalWrite(GreenPin, LOW);  	digitalWrite(RedPin, LOW); 		digitalWrite(BluePin, HIGH);	break;
 
-		digitalWrite(GreenPin, LOW);  
-		digitalWrite(RedPin, LOW); 
-		digitalWrite(BluePin, LOW);
+		default : break;
+		
 	}
+
 }
 
