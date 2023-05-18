@@ -101,24 +101,24 @@ ISR(TIMER0_COMPA_vect){
 	}
 #endif
 	//RGB LED
-	if(timer_Led>150) //60ms   60/4
+	if(timer_Led>=150) //60ms   60/4
 	{
 		led_rtask=1;
 
 	}
-	if(timer_Led>300)
+	if(timer_Led>=300)
 	{
 		led_gtask=1;
 
 	}
-	if(timer_Led>450)
+	if(timer_Led>=450)
 	{
 		led_btask=1;
 		timer_Led=0;
 	}
 
 //	if(debug_timer>400)
-	if(debug_timer>550)
+	if(debug_timer>=550)
 	{
 		debug_flag=1;
 		debug_timer=0;
@@ -160,25 +160,33 @@ void Timer_Init()
 	TCCR0B |= (1<<CS02) | (0<<CS00);
 	TIMSK0 |= (1<<OCIE0A);
 }
+void Port_init()
+{
+	digitalWrite(RESET_PIN,HIGH);	//RESET PIN
+	pinMode(RESET_PIN,OUTPUT);
+	delay(100);
+	
+}
 
 void setup() {
-  // put your setup code here, to run once:
-  #if DebugMode
-  Serial.begin(9600);
-  #endif
-  RGB_LED_Init();
-  
-  Timer_Init();
-  sei();
+	// put your setup code here, to run once:
+	Port_init();
+#if DebugMode
+	Serial.begin(9600);
+#endif
+	RGB_LED_Init();
 
-  BT_Init();
-  IR_Init();
+	Timer_Init();
+	sei();
 
-  RGB_LED_Init();
-  Motor_init();
+	BT_Init();
+	IR_Init();
 
-  //OCR0B= 255/2; 
+	RGB_LED_Init();
+	Motor_init();
 
+	//OCR0B= 255/2; 
+	_printf("FW Version: %s\r\n",FW_VER);
 }
 
 
@@ -189,9 +197,9 @@ void Task_Func()
 	if(Ir_task){  IR_Test();  Ir_task=0;}
 
 
-	if(led_rtask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, LOW); digitalWrite(GreenPin, LOW); digitalWrite(RedPin, HIGH);}		led_rtask=0;} 
-	if(led_gtask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, LOW); digitalWrite(GreenPin, HIGH); digitalWrite(RedPin, LOW);}		led_gtask=0;} 
-	if(led_btask){	if(LED_Flag&&!Motor_Flag){digitalWrite(BluePin, HIGH); digitalWrite(GreenPin, LOW); digitalWrite(RedPin, LOW);}		led_btask=0;} 
+	if(led_rtask){	if(LED_Flag&&!Motor_Flag){	setColor(RED_ON);}			led_rtask=0;} 
+	if(led_gtask){	if(LED_Flag&&!Motor_Flag){	setColor(GREEN_ON);}		led_gtask=0;} 
+	if(led_btask){	if(LED_Flag&&!Motor_Flag){	setColor(BLUE_ON);}			led_btask=0;} 
 
 	if(motor_task){	Motor_Exec();	motor_task=0;}
 }
