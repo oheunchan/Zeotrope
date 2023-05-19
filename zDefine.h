@@ -1,7 +1,7 @@
 #ifndef __Define_H_
 #define __Define_H_
 
-#define FW_VER	"V1.0"
+#define FW_VER	"V1.1"
 
 #define RedPin    A0
 #define GreenPin  A1
