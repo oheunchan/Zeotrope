@@ -6,17 +6,26 @@ void BT_Init();
 void Bluetooth();
 
 
-#define BT_PHeader  0xFF
+#define BT_PHeader  		0xFF
 
-#define LED_ON      0xA2
-#define LED_OFF     0x62
+//LED
+#define LED_ON      		0xA2
+#define LED_OFF     		0x62
 
-#define MT_FORWARD    0xE2
-#define MT_BACKWARD   0x22
+//MOTOR
+#define MT_FORWARD    		0xE2
+#define MT_BACKWARD   		0x22
+#define MOTOR_ON     		0x02
+#define MOTOR_OFF    		0xC2
+#define MT_NORMAL_MODE		0xE0
+#define MT_TB_MODE			0xA8
 
-#define MT_SPD_UP     0x02
-#define MT_SPD_DN     0xC2
-#define MT_POWER_OFF  0xE0
+//RESET
+#define SOFT_RESET			0x68
+
+//ETC
+#define ETC_CMD				0x90
+
 
 
 typedef enum
