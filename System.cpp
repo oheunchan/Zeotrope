@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "zDefine.h"
 #include "System.h"
+#include "PT_Sensor.h"
 
 void RestFunc()
 {
@@ -48,6 +49,12 @@ void Port_init()
 {
 	digitalWrite(RESET_PIN,HIGH);	//RESET PIN
 	pinMode(RESET_PIN,OUTPUT);
+//	pinMode(PHOTO_SENSOR,INPUT);
+	pinMode(PHOTO_SENSOR, INPUT);
+	attachInterrupt(digitalPinToInterrupt(PHOTO_SENSOR), PT_Sensor_Read, RISING); 
+	//attachInterrupt(digitalPinToInterrupt(PHOTO_SENSOR), PT_Sensor_OFF, LOW); 
+	
+	
 	delay(100);
 	
 }
