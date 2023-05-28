@@ -1,41 +1,4 @@
 
-/*
-##Zeotrope Project
-2023.05.06
-- Release Motor 구동 및 코드 정리
-- 모터 가감속 및 LED 동작 제어 
-
-2023.03.05
-- IR/BT 프로토콜 추가
-
-2023.02.19
-- 코드 리팩토링 및 모듈화 작업중
-
-2023.02.06
-- Step Motor Test로 구현
-
-2023.01.30
-- HC06 LED 동작 테스트
-- bluetooth.read()가 1byte로 동작함 Protocol은 3byte이므로 수정 필요
-
-2023.01.29
--HC06 TEST 노트북으로 통신 확인
--IR 동작이 안되서 IRREMOTE V3.9.0으로 다운그레이드 라이브러리 upgrade 하지 말것
-
-2023.01.28
--HC06 TEST 중 아이폰에서 동작하지 않음.
-
-2023.01.26
--리모컨으로 LED 동작 테스트
-
-2023.01.25  
-- Timer를 이용한 Task 구현
-- LED / IR 구현 
-
-2023.01.24  Start OEC 
-*/
-
-
 #include "zInclude.h"
 
 
@@ -67,6 +30,7 @@ char motor_task;
 char LED_Flag;
 char Motor_Flag;
 
+char read_val;
 
 ISR(TIMER0_COMPA_vect){
 	timer_Led++;
@@ -144,6 +108,7 @@ void setup() {
 
 	//OCR0B= 255/2; 
 	_printf("FW Version: %s\r\n",FW_VER);
+	
 }
 
 
@@ -164,9 +129,17 @@ void Task_Func()
 void loop() {
   // put your main code here, to run repeatedly:
  
-	Task_Func();
+	
   
-	    
+	Task_Func();
+	
+	if(read_val)
+		{
+			digitalWrite(RedPin, HIGH);
+			read_val=0;
+		}
+		else
+			digitalWrite(RedPin, LOW);
 
 
 }
