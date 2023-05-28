@@ -1,14 +1,20 @@
 #ifndef __Define_H_
 #define __Define_H_
 
-#define FW_VER	"V1.1"
+#define FW_VER	"V1.12"
 
+#if 0
 #define RedPin    A0
 #define GreenPin  A1
 #define BluePin   A2
+#else
+#define RedPin    11
+#define GreenPin  9
+#define BluePin   6
+#endif
 
 //RESET
-#define RESET_PIN	6
+#define RESET_PIN	A3
 
 //Bluetooth
 #define BT_RXD    4
@@ -22,7 +28,10 @@
 #define MOTOR_DIR   12
 #define MOTOR_BRK   8
 #define MOTOR_PWM   5
-  
+
+//PhotoSensor
+#define PHOTO_SENSOR 3
+
 
 #define DebugMode 1
 
