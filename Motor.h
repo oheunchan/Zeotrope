@@ -12,7 +12,8 @@ enum{
  	Motor_Max_SPD,
 };
 
-enum{Motor_Mode_Normal=0x0,Motor_Mode_TB};
+enum{Motor_Mode_TB=0x0,Motor_Mode_Normal};
+
 
 void _printf(const char *s, ...);
 void Motor_init();
