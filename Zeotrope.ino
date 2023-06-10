@@ -30,9 +30,33 @@ char motor_task;
 char LED_Flag;
 char Motor_Flag;
 
-char read_val;
+//char read_val;
+char read_val=0;
+
+
+
+void Task_Func()
+{
+
+	if(Blue_task)	{	Bluetooth();  Blue_task=0;}
+	if(Ir_task)		{	IR_Test();  Ir_task=0;}
+
+
+	if(led_rtask)	{	if(LED_Flag&&!Motor_Flag){	setColor(RED_ON);}			led_rtask=0;} 
+	if(led_gtask)	{	if(LED_Flag&&!Motor_Flag){	setColor(GREEN_ON);}		led_gtask=0;} 
+	if(led_btask)	{	if(LED_Flag&&!Motor_Flag){	setColor(BLUE_ON);}			led_btask=0;} 
+
+	if(motor_task)	{	Motor_Exec();	motor_task=0;}
+
+	if(read_val)	{	digitalWrite(GreenPin, HIGH);  	digitalWrite(RedPin, HIGH); 	digitalWrite(BluePin, HIGH);}
+	else			{	digitalWrite(GreenPin, LOW);  	digitalWrite(RedPin, LOW); 		digitalWrite(BluePin, LOW);	}
+	
+}
+
+
 
 ISR(TIMER0_COMPA_vect){
+
 	timer_Led++;
 	timer_Ir ++;
 	debug_timer++;
@@ -52,14 +76,12 @@ ISR(TIMER0_COMPA_vect){
 		timer_Ir=0;
 	}
 	//motor
-#if 1	
 	if(timer_motor>700)
 	{
 		motor_task=1;
 		timer_motor=0;		
 		TCNT0=0;
 	}
-#endif
 	//RGB LED
 	if(timer_Led>=150) //60ms   60/4
 	{
@@ -77,7 +99,6 @@ ISR(TIMER0_COMPA_vect){
 		timer_Led=0;
 	}
 
-//	if(debug_timer>400)
 	if(debug_timer>=550)
 	{
 		debug_flag=1;
@@ -85,7 +106,6 @@ ISR(TIMER0_COMPA_vect){
 //		TCNT0=0;
 	}
 	
-  
 }
 
 
@@ -106,40 +126,18 @@ void setup() {
 	RGB_LED_Init();
 	Motor_init();
 
-	//OCR0B= 255/2; 
 	_printf("FW Version: %s\r\n",FW_VER);
-	
+
 }
 
 
-void Task_Func()
-{
-
-	if(Blue_task){  Bluetooth();  Blue_task=0;}
-	if(Ir_task){  IR_Test();  Ir_task=0;}
-
-
-	if(led_rtask){	if(LED_Flag&&!Motor_Flag){	setColor(RED_ON);}			led_rtask=0;} 
-	if(led_gtask){	if(LED_Flag&&!Motor_Flag){	setColor(GREEN_ON);}		led_gtask=0;} 
-	if(led_btask){	if(LED_Flag&&!Motor_Flag){	setColor(BLUE_ON);}			led_btask=0;} 
-
-	if(motor_task){	Motor_Exec();	motor_task=0;}
-}
 
 void loop() {
   // put your main code here, to run repeatedly:
  
-	
-  
+ 
 	Task_Func();
-	
-	if(read_val)
-		{
-			digitalWrite(RedPin, HIGH);
-			read_val=0;
-		}
-		else
-			digitalWrite(RedPin, LOW);
+
 
 
 }
