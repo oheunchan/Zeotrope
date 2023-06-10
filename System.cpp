@@ -2,13 +2,20 @@
 #include "zDefine.h"
 #include "System.h"
 #include "PT_Sensor.h"
+#include "Motor.h"
 
 void RestFunc()
 {
-	_printf("SOFT RESET\r\n"); 
-  digitalWrite(RESET_PIN,LOW);
-  delay(100);
-  digitalWrite(RESET_PIN,HIGH);
+	
+	_printf("SOFT RESET\r\n"); \
+	Motor_OFF();
+	OCR0B=0;
+	delay(1000);
+	
+	digitalWrite(RESET_PIN,LOW);
+	delay(100);
+	digitalWrite(RESET_PIN,HIGH);
+	
 }
 
 
@@ -35,7 +42,8 @@ void _printf(const char *s, ...){
 
 void Timer_Init()
 {
-  //TCCR0A = 0; //TCCR0A initialize
+
+//	TCCR0A = 0; //TCCR0A initialize
 	TCCR0A |= 0x20;//TCCR0A initialize
 	TCCR0B = 0; //TCCR0B initialize
 	TCNT0 = 0;  //TCNT0 initialize
@@ -44,6 +52,7 @@ void Timer_Init()
 	TCCR0B |= (1<<WGM02);
 	TCCR0B |= (1<<CS02) | (0<<CS00);
 	TIMSK0 |= (1<<OCIE0A);
+
 }
 void Port_init()
 {
@@ -55,7 +64,7 @@ void Port_init()
 	//attachInterrupt(digitalPinToInterrupt(PHOTO_SENSOR), PT_Sensor_OFF, LOW); 
 	
 	
-	delay(100);
+//	delay(100);
 	
 }
 
