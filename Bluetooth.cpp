@@ -24,6 +24,8 @@ void BT_Init()
   _printf("Bt Init OK\r\n");
 }
 
+
+
 void Bluetooth()
 {
  
