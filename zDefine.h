@@ -1,7 +1,7 @@
 #ifndef __Define_H_
 #define __Define_H_
 
-#define FW_VER	"V1.12"
+#define FW_VER	"V1.13"
 
 #if 0
 #define RedPin    A0
