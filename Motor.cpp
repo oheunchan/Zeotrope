@@ -84,9 +84,9 @@ void Motor_Exec()
 				case Motor_2Step_SPD:	OCR0B=60;				step=Motor_3Step_SPD;		break;
 				case Motor_3Step_SPD:	OCR0B=100;				step=Motor_4Step_SPD;		break;
 				case Motor_4Step_SPD:	OCR0B=140;				step=Motor_5Step_SPD;		break;
-				case Motor_5Step_SPD:	OCR0B=180;				step=Motor_6Step_SPD;		break;
-				case Motor_6Step_SPD:	OCR0B=220;				step=Motor_Max_SPD;			break;
-				case Motor_Max_SPD:		OCR0B=250;				step=Motor_Max_SPD;			break;
+				case Motor_5Step_SPD:	OCR0B=140;				step=Motor_6Step_SPD;		break;
+				case Motor_6Step_SPD:	OCR0B=140;				step=Motor_Max_SPD;			break;
+				case Motor_Max_SPD:		OCR0B=140;				step=Motor_Max_SPD;			break;
 				default : break;
 
 			}
@@ -100,9 +100,9 @@ void Motor_Exec()
 				case Motor_2Step_SPD:	OCR0B=30;				step=Motor_1Step_SPD;		break;
 				case Motor_3Step_SPD:	OCR0B=70;				step=Motor_2Step_SPD;		break;
 				case Motor_4Step_SPD:	OCR0B=100;				step=Motor_3Step_SPD;		break;
-				case Motor_5Step_SPD:	OCR0B=160;				step=Motor_4Step_SPD;		break;
-				case Motor_6Step_SPD:	OCR0B=220;				step=Motor_5Step_SPD;		break;
-				case Motor_Max_SPD:		OCR0B=250;				step=Motor_6Step_SPD;		break;
+				case Motor_5Step_SPD:	OCR0B=140;				step=Motor_4Step_SPD;		break;
+				case Motor_6Step_SPD:	OCR0B=140;				step=Motor_5Step_SPD;		break;
+				case Motor_Max_SPD:		OCR0B=140;				step=Motor_6Step_SPD;		break;
 				default : break;
 
 			}
