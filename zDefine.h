@@ -1,12 +1,10 @@
 #ifndef __Define_H_
 #define __Define_H_
 
-#define FW_VER	"V1.13"
+#define FW_VER	"V1.14"
 
-#if 0
-#define RedPin    A0
-#define GreenPin  A1
-#define BluePin   A2
+#if 1
+#define NeoPixel	6
 #else
 #define RedPin    11
 #define GreenPin  9
@@ -31,6 +29,10 @@
 
 //PhotoSensor
 #define PHOTO_SENSOR 3
+
+//STROBE LED
+#define STROBE_LED	A4
+
 
 
 #define DebugMode 1
