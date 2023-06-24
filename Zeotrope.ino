@@ -24,15 +24,13 @@ char led_rtask;
 char led_gtask;
 char led_btask;
 
+char neopixel_task;
+
 char motor_task;
 
 
 char LED_Flag;
 char Motor_Flag;
-
-//char read_val;
-char read_val=0;
-
 
 
 void Task_Func()
@@ -41,16 +39,18 @@ void Task_Func()
 	if(Blue_task)	{	Bluetooth();  Blue_task=0;}
 	if(Ir_task)		{	IR_Test();  Ir_task=0;}
 
-
+#if 0
 	if(led_rtask)	{	if(LED_Flag&&!Motor_Flag){	setColor(RED_ON);}			led_rtask=0;} 
 	if(led_gtask)	{	if(LED_Flag&&!Motor_Flag){	setColor(GREEN_ON);}		led_gtask=0;} 
 	if(led_btask)	{	if(LED_Flag&&!Motor_Flag){	setColor(BLUE_ON);}			led_btask=0;} 
+#else
+
+#endif
 
 	if(motor_task)	{	Motor_Exec();	motor_task=0;}
 
-	if(read_val)	{	digitalWrite(GreenPin, HIGH);  	digitalWrite(RedPin, HIGH); 	digitalWrite(BluePin, HIGH);}
-	else			{	digitalWrite(GreenPin, LOW);  	digitalWrite(RedPin, LOW); 		digitalWrite(BluePin, LOW);	}
-	
+	PT_Sensor_Read();	
+//	setColor();		//TEST¿ë NeoPixel
 }
 
 
@@ -83,6 +83,7 @@ ISR(TIMER0_COMPA_vect){
 		TCNT0=0;
 	}
 	//RGB LED
+#if 0
 	if(timer_Led>=150) //60ms   60/4
 	{
 		led_rtask=1;
@@ -98,7 +99,14 @@ ISR(TIMER0_COMPA_vect){
 		led_btask=1;
 		timer_Led=0;
 	}
-
+#else
+	
+	if(timer_Led>=450)
+	{
+		neopixel_task=1;
+		timer_Led=0;
+	}
+#endif
 	if(debug_timer>=550)
 	{
 		debug_flag=1;
@@ -114,8 +122,7 @@ void setup() {
 	Port_init();
 #if DebugMode
 	Serial.begin(9600);
-#endif
-	RGB_LED_Init();
+#endif 
 
 	Timer_Init();
 	sei();
@@ -123,7 +130,8 @@ void setup() {
 	BT_Init();
 	IR_Init();
 
-	RGB_LED_Init();
+	RGB_LED_Init();	
+	NeoPixel_Init();
 	Motor_init();
 
 	_printf("FW Version: %s\r\n",FW_VER);
@@ -135,9 +143,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
  
- 
 	Task_Func();
-
 
 
 }
