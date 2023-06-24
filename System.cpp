@@ -56,15 +56,16 @@ void Timer_Init()
 }
 void Port_init()
 {
-	digitalWrite(RESET_PIN,HIGH);	//RESET PIN
 	pinMode(RESET_PIN,OUTPUT);
-//	pinMode(PHOTO_SENSOR,INPUT);
 	pinMode(PHOTO_SENSOR, INPUT);
-	attachInterrupt(digitalPinToInterrupt(PHOTO_SENSOR), PT_Sensor_Read, RISING); 
-	//attachInterrupt(digitalPinToInterrupt(PHOTO_SENSOR), PT_Sensor_OFF, LOW); 
+	pinMode(STROBE_LED,OUTPUT);
+	pinMode(NeoPixel, OUTPUT);
 	
-	
-//	delay(100);
-	
+	digitalWrite(RESET_PIN,HIGH);	//RESET PIN
+	digitalWrite(STROBE_LED,HIGH);	//strobe PIN
+
+
+
+		
 }
 
