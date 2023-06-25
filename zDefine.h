@@ -1,7 +1,7 @@
 #ifndef __Define_H_
 #define __Define_H_
 
-#define FW_VER	"V1.14"
+#define FW_VER	"V1.15"
 
 #if 1
 #define NeoPixel	6
