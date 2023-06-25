@@ -5,10 +5,9 @@
 void PT_Sensor_Read(void)
 {
 
-	if(digitalRead(PHOTO_SENSOR))
-		digitalWrite(STROBE_LED,LOW);
-	else
-		digitalWrite(STROBE_LED,HIGH);
+	if(digitalRead(PHOTO_SENSOR))		digitalWrite(A4,HIGH);
+	else								  digitalWrite(A4,LOW);
+
 }
 
 
